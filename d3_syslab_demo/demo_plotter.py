@@ -3,6 +3,7 @@ import json
 import matplotlib.pyplot as plt
 import os
 from datetime import timedelta
+import syslab
 
 ## Read the measurements data file ##
 DATA_MEAS_DIR = 'data\measurements'
