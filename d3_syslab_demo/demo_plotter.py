@@ -48,22 +48,29 @@ df_pivot[[c for c in df_pivot.columns if "_p" in c]].plot(marker='.', ax=ax1, li
 df_pivot[[c for c in df_pivot.columns if "_q" in c]].plot(marker='.', ax=ax2, linewidth=3)
 plt.show(block=True)
 
-
+#%%
 ## TODO Q1: Your code here
+plt.figure(figsize=(10, 6))
+plt.plot(df_pivot.iloc[:, ::2],df_pivot.iloc[:, 1::2], marker='.', linewidth=3)
+plt.legend(df_pivot.columns[::2])
+plt.xlabel('P')
+plt.ylabel('Q')
+plt.title('P vs Q')
+plt.show()
 
-
-
-
-
+#%%
 ## TODO Q2:
 # Convert time column (index) of df_pivot to datetime
 # TODO Your code here
 # Hint1: You can use pandas to_numeric() to prepare the index for pandas to_datetime function
 # Hint2: Remember to define the unit within pandas to_datetime function
 
+df_pivot.index = pd.to_datetime(df_pivot.index, unit='s')
+
+#%%
 # Resample the data
 # TODO Your code here
-
+df_resampled = df_pivot.resample('s').mean()
 
 # Interpolate the measurements
 # TODO Your code here
@@ -72,12 +79,19 @@ plt.show(block=True)
 # You can use the df.fillna(method="ffill") function for that purpose. However, the measurements should still be interpolated!
 
 
-
+#%%
 # Plot the resampled data
 # TODO Your code here
+plt.ion()  # Turn interactive mode on
+plt.figure()
+ax1 = plt.subplot(211)  # Make two separate figures
+ax2 = plt.subplot(212)
+df_resampled[[c for c in df_resampled.columns if "_p" in c]].plot(marker='.', ax=ax1, linewidth=3)
+df_resampled[[c for c in df_resampled.columns if "_q" in c]].plot(marker='.', ax=ax2, linewidth=3)
+plt.show(block=True)
 
 
-
+#%%
 ## TODO Q3: Your code here
 
 
