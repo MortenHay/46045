@@ -110,7 +110,10 @@ df_resampled = df_resampled.interpolate()
 
 # Plot the resampled data
 # TODO Your code here
-df_resampled.plot(marker=".", linewidth=3)
+plt.figure(figsize=(10, 6))
+plt.plot(df_resampled.index, df_resampled, marker=".", linewidth=3)
+plt.legend(df_resampled.columns)
+plt.show()
 
 
 # %%
