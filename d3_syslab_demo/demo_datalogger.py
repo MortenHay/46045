@@ -3,7 +3,7 @@ from json import dump
 from time import sleep, time
 
 # Defines location and name of the measurements file
-LOG_FILE = f'data/measurements/measurements_{time():.00f}.json'
+LOG_FILE = f'd3_syslab_demo/data/measurements/measurements_{time():.00f}.json'
 print(f"Logging to file {LOG_FILE}")
 
 # Set up a connection to the switchboards

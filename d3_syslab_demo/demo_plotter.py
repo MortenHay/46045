@@ -124,8 +124,11 @@ min_ramp = min(gaia_ramp)
 steep_ramp = max(np.abs([max_ramp, min_ramp]))
 
 ## TODO Q4: Your code here
-
-
+df_resampled['recon'] = 0
+for x in df_resampled.columns[:-1:2]:
+    if x != 'pcc_p':
+        df_resampled['recon'] += df_resampled[x]
+#%%
 ## Part two: "Collecting fresh data"
 
 # Hint 1: You can build up on the "read_and_plot_data.py" from day 2
