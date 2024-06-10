@@ -2,6 +2,7 @@
 import pandas as pd
 import json
 import matplotlib.pyplot as plt
+import numpy as np
 import os
 from datetime import timedelta
 import syslab
@@ -114,7 +115,13 @@ df_resampled.plot(marker=".", linewidth=3)
 
 # %%
 ## TODO Q3: Your code here
-
+gaia = df_resampled["gaia_p"]
+gaia.plot()
+gaia_range = (min(gaia), max(gaia))
+gaia_ramp = (gaia.diff()).dropna()
+max_ramp = max(gaia_ramp)
+min_ramp = min(gaia_ramp)
+steep_ramp = max(np.abs([max_ramp, min_ramp]))
 
 ## TODO Q4: Your code here
 
