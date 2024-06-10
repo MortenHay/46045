@@ -8,10 +8,14 @@ plt.ion()
 # Creating a list of all csv files in the current working directory
 csv_files = [
     f for f in os.listdir(".") if f.endswith(".csv") and "unit_characterization_" in f
+    f for f in os.listdir('.') if f.endswith(".csv") and "unit_characterization_" in f
 ]
 
 # Create a dictionary with one csv file each key stored as dataframe
 dfs_dict = {filename: pd.read_csv(filename, index_col=0) for filename in csv_files}
+dfs_dict = {
+    filename: pd.read_csv(filename, index_col=0) for filename in csv_files
+}
 
 # Plot all csv files included in the dfs_dict
 for title, df in dfs_dict.items():
@@ -43,14 +47,24 @@ def undershoot(y, r, T_os, T_2, positive_step=None):
 
 
 def settling_time(y, r, T_1, T_2, M):
-    # TODO Q2: Your code here
-    result = 10.0
+    e = r[T_1:T_2] - y[T_1:T_2]
+    for t in e.index:
+        t_settling = t
+        if e.loc[t:].abs().max() < M:
+            break
+    
+    result = t_settling - T_1
     return result
 
 
 def rmse(y, r, T_1, T_2):
-    # TODO Q2: Your code here
-    result = 10.0
+    sq_e = r[T_1:T_2] - y[T_1:T_2]
+    sq_e_sum = 0
+    for x in sq_e:
+        sq_e_sum += x**2
+
+    rsme = (sq_e_sum / len(sq_e))**(1/2)
+    result = rsme
     return result
 
 
