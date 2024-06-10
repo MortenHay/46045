@@ -69,13 +69,16 @@ plt.show(block=True)
 # %%
 ## TODO Q1: Your code here
 plt.figure(figsize=(10, 6))
-plt.plot(df_pivot.iloc[:, ::2], df_pivot.iloc[:, 1::2], marker=".", linewidth=3)
-plt.legend(df_pivot.columns[::2])
+for x in df_pivot.columns:
+    if '_p' in x:
+        x = x.replace('_p', '')
+        plt.plot(df_pivot[x+'_p'], df_pivot[x+'_q'], label=x, marker=".", linewidth=3)
+        print(x)
+plt.legend()
 plt.xlabel("P")
 plt.ylabel("Q")
 plt.title("P vs Q")
 plt.show()
-
 # %%
 ## TODO Q2:
 # Convert time column (index) of df_pivot to datetime
