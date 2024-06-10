@@ -140,6 +140,7 @@ plt.plot(df_resampled.index,df_resampled["recon"]-df_resampled["pcc_p"], label="
 plt.title("PQ-error")
 plt.xlabel("Time")
 plt.ylabel("PQ-error")
+plt.show()
 # %%
 ## Part two: "Collecting fresh data"
 
