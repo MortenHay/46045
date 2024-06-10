@@ -77,18 +77,6 @@ plt.title("P vs Q")
 plt.show()
 
 # %%
-ncol = 3
-nrow = 3
-fig, axs = plt.subplots(nrows=nrow, ncols=ncol)
-units = [c[:-2] for c in df_pivot.columns if "_p" in c]
-for i in range(len(units)):
-    ax = axs.reshape(-1)[i]
-    ax.plot(df_pivot[units[i] + "_q"], df_pivot[units[i] + "_p"], label=units[i])
-    ax.title.set_text(units[i])
-
-fig.tight_layout()
-
-# %%
 ## TODO Q2:
 # Convert time column (index) of df_pivot to datetime
 # TODO Your code here
@@ -114,6 +102,20 @@ df_resampled.plot(marker=".", linewidth=3)
 
 
 # %%
+ncol = 3
+nrow = 3
+fig, axs = plt.subplots(nrows=nrow, ncols=ncol)
+units = [c[:-2] for c in df_resampled.columns if "_p" in c]
+for i in range(len(units)):
+    ax = axs.reshape(-1)[i]
+    ax.plot(
+        df_resampled[units[i] + "_q"], df_resampled[units[i] + "_p"], label=units[i]
+    )
+    ax.title.set_text(units[i])
+
+fig.tight_layout()
+
+# %%
 ## TODO Q3: Your code here
 gaia = df_resampled["gaia_p"]
 gaia.plot()
@@ -124,11 +126,11 @@ min_ramp = min(gaia_ramp)
 steep_ramp = max(np.abs([max_ramp, min_ramp]))
 
 ## TODO Q4: Your code here
-df_resampled['recon'] = 0
+df_resampled["recon"] = 0
 for x in df_resampled.columns[:-1:2]:
-    if x != 'pcc_p':
-        df_resampled['recon'] += df_resampled[x]
-#%%
+    if x != "pcc_p":
+        df_resampled["recon"] += df_resampled[x]
+# %%
 ## Part two: "Collecting fresh data"
 
 # Hint 1: You can build up on the "read_and_plot_data.py" from day 2
