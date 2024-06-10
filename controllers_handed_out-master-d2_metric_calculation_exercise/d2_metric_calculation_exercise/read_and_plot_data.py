@@ -43,7 +43,7 @@ def undershoot(y, r, T_os, T_2, positive_step=None):
 
 
 def settling_time(y, r, T_1, T_2, M):
-    e = r[T_1:T_2] - y[T_1:T_2]
+    e = r.loc[T_1:T_2] - y.loc[T_1:T_2]
     for t in e.index:
         t_settling = t
         if e.loc[t:].abs().max() < M:
@@ -54,7 +54,7 @@ def settling_time(y, r, T_1, T_2, M):
 
 
 def rmse(y, r, T_1, T_2):
-    sq_e = r[T_1:T_2] - y[T_1:T_2]
+    sq_e = r.loc[T_1:T_2] - y.loc[T_1:T_2]
     sq_e_sum = 0
     for x in sq_e:
         sq_e_sum += x**2
