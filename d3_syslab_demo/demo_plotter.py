@@ -73,23 +73,20 @@ df_pivot.index = pd.to_datetime(df_pivot.index, unit='s')
 # TODO Your code here
 df_resampled = df_pivot.resample('s').mean()
 
+#%%
 # Interpolate the measurements
 # TODO Your code here
 # Hint: For part two of the exercise ("collecting fresh data") the nan rows after a setpoint
 # in the recorded step function should be filled with the value of the setpoint until the row of the next setpoint is reached
 # You can use the df.fillna(method="ffill") function for that purpose. However, the measurements should still be interpolated!
-
+df_resampled = df_resampled.interpolate()
 
 #%%
 # Plot the resampled data
 # TODO Your code here
-plt.ion()  # Turn interactive mode on
-plt.figure()
-ax1 = plt.subplot(211)  # Make two separate figures
-ax2 = plt.subplot(212)
-df_resampled[[c for c in df_resampled.columns if "_p" in c]].plot(marker='.', ax=ax1, linewidth=3)
-df_resampled[[c for c in df_resampled.columns if "_q" in c]].plot(marker='.', ax=ax2, linewidth=3)
-plt.show(block=True)
+df_resampled.plot(marker='.', linewidth=3)
+
+#%%
 
 
 #%%
