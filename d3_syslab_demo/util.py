@@ -9,16 +9,17 @@ def overshoot(y, r, T_1, T_2, positive_step=True):
     result, t_max = 0, 0
     if positive_step:
         result = (y - r).loc[T_1:T_2].max()
+        t_max = (y - r).loc[T_1:T_2].idxmax()
     else:
         result = (r - y).loc[T_1:T_2].max()
-
+        t_max = (r - y).loc[T_1:T_2].idxmax()
     return max(result, 0), t_max
 
 
 def undershoot(y, r, T_os, T_2, positive_step=None):
-    result, t_max = 0, 0
+    result = 0
     if positive_step:
-        result = -((r - y.loc[T_2]).loc[T_os:T_2].min())
+        result = -((y - r).loc[T_os:T_2].min())
     else:
         result = -((r - y).loc[T_os:T_2].min())
 

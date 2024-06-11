@@ -6,6 +6,7 @@ import numpy as np
 import os
 from datetime import timedelta
 import syslab
+from util import *
 
 try:
     ## Read the measurements data file ##
@@ -23,7 +24,7 @@ with open(os.path.join(DATA_MEAS_DIR, MEAS_LOG_FILE)) as f:
     meas_data = [json.loads(line) for line in f]
 
 # Use setpoint logger (only necessary for part two of the exercise "collecting fresh data")
-use_setpoint_log = False
+use_setpoint_log = True
 
 
 ## Read the setpoints data file ##
@@ -70,9 +71,11 @@ plt.show(block=True)
 ## TODO Q1: Your code here
 plt.figure(figsize=(10, 6))
 for x in df_pivot.columns:
-    if '_p' in x:
-        x = x.replace('_p', '')
-        plt.plot(df_pivot[x+'_p'], df_pivot[x+'_q'], label=x, marker=".", linewidth=3)
+    if "_p" in x:
+        x = x.replace("_p", "")
+        plt.plot(
+            df_pivot[x + "_p"], df_pivot[x + "_q"], label=x, marker=".", linewidth=3
+        )
         print(x)
 plt.legend()
 plt.xlabel("P")
@@ -145,9 +148,6 @@ for x in df_resampled.columns[:-1:2]:
 
 if use_setpoint_log:
 
-    # Add a column to df_pivot containing the reference/target signal
-    # TODO your code here
-
     # Loop over all steps and extract T_1, T_2 and the step size
     results = {}
 
@@ -155,31 +155,36 @@ if use_setpoint_log:
         label = f"Step_{sp_data[idx]['value']}kW"
 
         # Extract T_1 and T_2 from the setpoint JSON
-        # TODO your code here
+        T_1 = sp_data[idx]["time"]
+        T_2 = sp_data[idx + 1]["time"]
 
         # Change timestamp format
-        T_1 = pd.to_datetime(pd.to_numeric(T_1), unit="s").round("0.1S")
-        T_2 = pd.to_datetime(pd.to_numeric(T_2), unit="s").round("0.1S")
+        T_1 = pd.to_datetime(pd.to_numeric(T_1), unit="s").round("1s")
+        T_2 = pd.to_datetime(pd.to_numeric(T_2), unit="s").round("1s")
 
         # To ensure we are not considering values of the next load step
         T_2 = T_2 - timedelta(seconds=0.2)
 
         # define measured output y and target setpoint r
-        # TODO your code here
+        y = df_resampled["pcc_p"]
+        r = pd.Series(0, index=y.index)
 
         # Derive step direction from the setpoint data
-        if ...:  # TODO your code here
-            Positive_step = True
-        else:
+
+        Positive_step = True
+        if sp_data[idx]["value"] < sp_data[idx - 1]["value"]:
             Positive_step = False
-
         # Collect response metrics results
+        os, T_os = overshoot(y, r, T_1, T_2, positive_step=Positive_step)
         results[label] = {
-            # TODO your code here
+            "overshoot": os,
+            "undershoot": undershoot(y, r, T_os, T_2, positive_step=Positive_step),
+            "settling_time": settling_time(y, r, T_1, T_2, 2),
+            "RMSE": rmse(y, r, T_1, T_2),
         }
-
-    pd.DataFrame.from_dict(results).plot(kind="bar")
+    print(pd.DataFrame.from_dict(results))
+"""     pd.DataFrame.from_dict(results).plot(kind="bar")
     plt.title("Metrics")
     plt.tight_layout()
     plt.savefig("data/test_metrics" + MEAS_LOG_FILE[-10:] + ".png")
-    plt.show(block=True)
+    plt.show(block=True) """
