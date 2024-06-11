@@ -139,6 +139,11 @@ df_resampled["recon"] = 0
 for x in df_resampled.columns[:-1:2]:
     if x != "pcc_p":
         df_resampled["recon"] += df_resampled[x]
+plt.plot(df_resampled.index,df_resampled["recon"]-df_resampled["pcc_p"], label="PQ-error", marker=".", linewidth=3)
+plt.title("PQ-error")
+plt.xlabel("Time")
+plt.ylabel("PQ-error")
+plt.show()
 # %%
 ## Part two: "Collecting fresh data"
 
